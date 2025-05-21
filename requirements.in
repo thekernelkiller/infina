@@ -1,0 +1,8 @@
+# requirements.in
+dspy
+google-genai
+streamlit
+python-dotenv
+
+pytest
+ruff 
