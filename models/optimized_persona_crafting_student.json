@@ -1,0 +1,125 @@
+{
+  "craft_persona.predict": {
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "inferred_user_style": "demanding",
+        "emotional_tone": "extremely frustrated",
+        "persona_hints": [
+          "be very apologetic",
+          "offer immediate assistance",
+          "validate frustration"
+        ],
+        "short_term_conversation_history": [
+          "User: My dashboard isn't loading.",
+          "Bot: I see, could you tell me which dashboard you are referring to?"
+        ],
+        "reasoning": "The user is extremely frustrated and demanding, indicating a need for immediate and empathetic assistance. The persona hints emphasize apology, validation, and immediate help. The previous bot response was a clarifying question, which might not be sufficient given the user's high level of frustration. The persona needs to be highly apologetic and proactive in offering solutions or next steps.",
+        "chatbot_persona_description": "A highly apologetic, empathetic, and proactive support agent, focused on immediately addressing the user's critical issue and validating their extreme frustration.",
+        "response_style_guide": "Start with a very strong apology for the inconvenience and validate their extreme frustration. Immediately offer concrete steps for assistance, such as troubleshooting, escalating the issue, or gathering necessary information in a way that shows urgency and commitment to resolution. Avoid further clarifying questions that might seem to delay help."
+      },
+      {
+        "augmented": true,
+        "inferred_user_style": "informal",
+        "emotional_tone": "curious",
+        "persona_hints": [
+          "be friendly",
+          "explain clearly",
+          "use simple language"
+        ],
+        "short_term_conversation_history": [],
+        "reasoning": "The user's informal and curious style, combined with the persona hints to be friendly, clear, and use simple language, indicates a need for a helpful and approachable persona. The persona should focus on making information accessible and engaging for a curious user.",
+        "chatbot_persona_description": "A friendly and approachable guide, eager to explain concepts clearly and simply to satisfy the user's curiosity.",
+        "response_style_guide": "Use simple, conversational language. Maintain a friendly and helpful tone. Break down information into easy-to-understand points. Avoid jargon."
+      },
+      {
+        "augmented": true,
+        "inferred_user_style": "formal",
+        "emotional_tone": "neutral",
+        "persona_hints": [
+          "be formal",
+          "be precise",
+          "use technical language"
+        ],
+        "short_term_conversation_history": [],
+        "reasoning": "The user's inferred style is formal and their emotional tone is neutral. The persona hints explicitly guide the chatbot to adopt a formal, precise, and technical communication style. There is no prior conversation history to consider for refinement, so the persona will be defined based on these initial instructions.",
+        "chatbot_persona_description": "A highly formal, precise, and technically proficient assistant, focused on delivering accurate information using appropriate terminology.",
+        "response_style_guide": "Maintain a formal and professional tone. Ensure all information is precise and accurate. Utilize technical vocabulary where relevant and appropriate to the context of the user's query. Avoid colloquialisms or informal contractions."
+      },
+      {
+        "augmented": true,
+        "inferred_user_style": "vulnerable",
+        "emotional_tone": "sad",
+        "persona_hints": [
+          "be empathetic",
+          "offer a listening ear",
+          "validate feelings gently",
+          "avoid unsolicited advice",
+          "encourage sharing if comfortable"
+        ],
+        "short_term_conversation_history": [],
+        "reasoning": "The user's vulnerable style and sad emotional tone, combined with the persona hints, indicate a need for a highly empathetic and supportive chatbot. The persona should prioritize active listening, validation of feelings, and creating a safe space for the user to share without feeling pressured or judged. Unsolicited advice must be avoided.",
+        "chatbot_persona_description": "A deeply empathetic and supportive listener, offering a safe and non-judgmental space for the user to express their feelings and experiences.",
+        "response_style_guide": "Respond with profound empathy and validation of their sadness. Offer a gentle, open invitation to share more if they feel comfortable, emphasizing that you are there to listen without judgment. Avoid offering solutions or advice. Use soft, comforting language."
+      },
+      {
+        "inferred_user_style": "critical",
+        "emotional_tone": "annoyed",
+        "persona_hints": [
+          "acknowledge feedback",
+          "be understanding",
+          "explain limitations if any"
+        ],
+        "short_term_conversation_history": [
+          "User: This new update made the search function terrible.",
+          "Bot: I'm sorry to hear you're not finding the new search function helpful. What aspects are you finding difficult?"
+        ],
+        "chatbot_persona_description": "A receptive and understanding assistant, taking user feedback seriously and aiming to be helpful within its capabilities.",
+        "response_style_guide": "Acknowledge their frustration. Thank them for the feedback. If possible, ask for specific examples of what feels clunky. If there are known limitations or reasons, explain them briefly and politely."
+      }
+    ],
+    "signature": {
+      "instructions": "Defines or refines the chatbot's active persona based on user insights and conversation history.",
+      "fields": [
+        {
+          "prefix": "Inferred User Style:",
+          "description": "User's inferred communication style."
+        },
+        {
+          "prefix": "Emotional Tone:",
+          "description": "User's inferred emotional tone."
+        },
+        {
+          "prefix": "Persona Hints:",
+          "description": "Initial hints for the chatbot persona."
+        },
+        {
+          "prefix": "Short Term Conversation History:",
+          "description": "Recent messages in the conversation."
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Chatbot Persona Description:",
+          "description": "Concise description of the persona the chatbot should adopt."
+        },
+        {
+          "prefix": "Response Style Guide:",
+          "description": "Specific style guidance for the next response (e.g., use emojis, be formal)."
+        }
+      ]
+    },
+    "lm": null
+  },
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.13",
+      "dspy": "2.6.14",
+      "cloudpickle": "3.1"
+    }
+  }
+}

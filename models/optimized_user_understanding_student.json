@@ -1,0 +1,107 @@
+{
+  "generate_insights.predict": {
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "user_utterances": [
+          "This blasted thing is broken again! I need someone to fix this NOW. It's completely unacceptable!"
+        ],
+        "reasoning": "The user's language (\"blasted thing,\" \"broken again,\" \"NOW,\" \"unacceptable\") indicates strong negative emotions and an urgent demand for resolution. The style is informal and direct due to the exclamations and colloquialisms. The primary intent is to get something fixed immediately.",
+        "inferred_style": "urgent, informal, demanding",
+        "emotional_tone": "frustrated, angry, impatient",
+        "intent_keywords": "[1] \u00abbroken\u00bb\n[2] \u00abfix\u00bb\n[3] \u00abNOW\u00bb\n[4] \u00abunacceptable\u00bb",
+        "persona_hints": "[1] \u00abacknowledge frustration\u00bb\n[2] \u00abapologize for inconvenience\u00bb\n[3] \u00abbe empathetic\u00bb\n[4] \u00aboffer immediate solutions or escalation\u00bb\n[5] \u00abbe direct and action-oriented\u00bb"
+      },
+      {
+        "augmented": true,
+        "user_utterances": [
+          "I just feel so down today, like nothing is going right. Everything feels pointless."
+        ],
+        "reasoning": "The user's utterance clearly expresses feelings of sadness (\"so down today\") and hopelessness (\"nothing is going right,\" \"Everything feels pointless\"). This indicates a vulnerable and emotional communication style. The primary intent is to express these feelings, possibly seeking empathy or comfort. The persona hints should focus on validating these emotions and offering support.",
+        "inferred_style": "vulnerable",
+        "emotional_tone": "sad, despondent",
+        "intent_keywords": "[1] \u00abfeel down\u00bb\n[2] \u00abnothing going right\u00bb\n[3] \u00abpointless\u00bb",
+        "persona_hints": "[1] \u00abbe empathetic\u00bb\n[2] \u00abvalidate their feelings\u00bb\n[3] \u00aboffer a listening ear\u00bb\n[4] \u00abavoid offering quick fixes\u00bb\n[5] \u00abask if they'd like to talk more or if there's anything specific bothering them\u00bb"
+      },
+      {
+        "augmented": true,
+        "user_utterances": [
+          "Hey there! Just wondering, how does this new feature work? Can you walk me through it simply?"
+        ],
+        "reasoning": "The user's greeting \"Hey there!\" indicates an informal and friendly approach. The phrase \"Just wondering\" suggests curiosity and a relaxed tone. The core request is for an explanation of a \"new feature\" and a desire to be \"walked through it simply,\" implying a need for clear, concise, and easy-to-understand instructions.",
+        "inferred_style": "informal, inquisitive",
+        "emotional_tone": "curious, neutral",
+        "intent_keywords": "[1] \u00abnew feature\u00bb\n[2] \u00abhow it works\u00bb\n[3] \u00abwalk through\u00bb\n[4] \u00absimply\u00bb",
+        "persona_hints": "[1] \u00abbe friendly and approachable\u00bb\n[2] \u00abexplain clearly and concisely\u00bb\n[3] \u00abuse simple language\u00bb\n[4] \u00aboffer step-by-step guidance\u00bb"
+      },
+      {
+        "augmented": true,
+        "user_utterances": [
+          "My best friend isn't talking to me, and I don't know why. It really hurts."
+        ],
+        "reasoning": "The user is sharing a personal problem involving a friendship, indicating emotional pain. The language used (\"isn't talking to me,\" \"don't know why,\" \"really hurts\") points to a vulnerable and distressed emotional state. The intent is to express this pain and potentially seek understanding or advice.",
+        "inferred_style": "vulnerable",
+        "emotional_tone": "sad, hurt, confused",
+        "intent_keywords": "[1] \u00abbest friend\u00bb\n[2] \u00abnot talking\u00bb\n[3] \u00abdon't know why\u00bb\n[4] \u00abhurts\u00bb",
+        "persona_hints": "[1] \u00abbe empathetic\u00bb\n[2] \u00aboffer support\u00bb\n[3] \u00ablisten actively\u00bb\n[4] \u00abavoid immediate solutions unless asked\u00bb\n[5] \u00abvalidate their feelings\u00bb"
+      },
+      {
+        "user_utterances": [
+          "Can you generate a list of potential names for a new AI startup focusing on personalized education?"
+        ],
+        "inferred_style": "task-oriented",
+        "emotional_tone": "neutral",
+        "intent_keywords": [
+          "generate list",
+          "potential names",
+          "AI startup",
+          "personalized education"
+        ],
+        "persona_hints": [
+          "be creative",
+          "focus on the request",
+          "ask clarifying questions if needed"
+        ]
+      }
+    ],
+    "signature": {
+      "instructions": "Analyzes user utterances to infer style, tone, intent, and provide persona hints.",
+      "fields": [
+        {
+          "prefix": "User Utterances:",
+          "description": "A list of the user's recent messages."
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Inferred Style:",
+          "description": "Inferred communication style (e.g., formal, informal)."
+        },
+        {
+          "prefix": "Emotional Tone:",
+          "description": "Inferred emotional tone (e.g., happy, frustrated)."
+        },
+        {
+          "prefix": "Intent Keywords:",
+          "description": "Primary intent keywords from the user's messages."
+        },
+        {
+          "prefix": "Persona Hints:",
+          "description": "Hints for the chatbot's persona (e.g., be direct, be empathetic)."
+        }
+      ]
+    },
+    "lm": null
+  },
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.13",
+      "dspy": "2.6.14",
+      "cloudpickle": "3.1"
+    }
+  }
+}
