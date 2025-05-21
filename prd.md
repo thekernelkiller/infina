@@ -11,7 +11,7 @@ This document outlines the technical requirements for building an Adaptive Perso
 *   **Deep Personalization:** The chatbot should feel uniquely attuned to each user.
 *   **Rapid Adaptation:** The system must quickly infer and adopt a compatible persona.
 *   **Continuous Learning:** The chatbot's understanding of the user and its persona should evolve.
-*   **Proactive Assistance:** Agentic capabilities should be used intelligently to aid the user, sometimes without explicit requests.
+*   **Proactive Assistance:** Agentic capabilities should be used intelligently to aid the user. This includes not only performing tasks (like search or calculation) but also proactively guiding conversations towards deeper understanding when a user expresses personal challenges or complex problems. The aim is to help users articulate their needs, thoughts, and feelings more fully, even if they start with simple or vague statements, thereby enabling more profound personalization and support.
 *   **Efficiency & Privacy:** Prioritize small models and local data storage (SQLite) for potential on-device deployment and enhanced privacy.
 *   **Modularity & Optimization (DSPy):** Leverage DSPy for structured development, enabling robust optimization of the small LM's performance.
 *   **User-Centric Design:** The system should minimize the need for users to "prompt engineer" their requests.
@@ -21,8 +21,8 @@ This document outlines the technical requirements for building an Adaptive Perso
 *   **Responsiveness:**
     *   Persona "kick-in" should be noticeable within 1-2 user interactions.
     *   Typical chatbot response latency should be interactive (e.g., < 2-3 seconds for core responses, agentic tasks may take longer and should indicate progress).
-*   **Personalization Depth:** The system should demonstrate increasingly nuanced understanding and adaptation to a user over multiple sessions.
-*   **Consistency:** The adopted persona for a user should remain reasonably consistent within a session and evolve predictably across sessions.
+*   **Personalization Depth:** The system should demonstrate increasingly nuanced understanding and adaptation to a user over multiple sessions. This includes recognizing shifts in user state, guiding users to articulate deeper needs beyond surface-level queries, and remembering conversational pathways that led to greater clarity or positive interaction, thereby fostering a sense of being truly understood and supported.
+*   **Consistency:** The adopted persona for a user should remain reasonably consistent within a session and evolve predictably across sessions, adapting smoothly to conversational context.
 *   **Accuracy (Agentic Tasks):** Information provided through web search or calculations must be accurate. Reports should be factual and well-summarized.
 *   **Resource Efficiency:** Optimized for small LMs. Memory and CPU usage should be mindful of potential on-device deployment.
 *   **Scalability (User Base):** While the initial focus is a personal bot, the architecture should allow for managing multiple distinct user profiles if scaled.
@@ -66,7 +66,7 @@ This document outlines the technical requirements for building an Adaptive Perso
     *   **Streamlit Display:** (Internal state, not directly displayed unless for debugging).
 
 **5.2. Feature: Dynamic Persona Crafting**
-    *   **Description:** Based on the output from the "Initial User Understanding" module and ongoing conversation, this module defines or refines the chatbot's active persona.
+    *   **Description:** Based on the output from the "Initial User Understanding" module and ongoing conversation, this module defines or refines the chatbot's active persona. It should be capable of subtle shifts in persona even within a single conversation if the user's input indicates a change in emotional state or topic depth (e.g., from task-focused to personal sharing).
     *   **Functionality:** Generates a concise description of the persona the chatbot should adopt for the *next* interaction.
     *   **DSPy Implementation:**
         *   **Module:** `dspy.ChainOfThought`.
@@ -76,7 +76,7 @@ This document outlines the technical requirements for building an Adaptive Perso
     *   **Streamlit Display:** (Internal state, but for debugging, one could display the `chatbot_persona_description`).
 
 **5.3. Feature: Persona-Driven Response Generation**
-    *   **Description:** Generates the chatbot's actual response, ensuring it aligns with the crafted persona and addresses the user's query.
+    *   **Description:** Generates the chatbot's actual response, ensuring it aligns with the crafted persona and addresses the user's query. Crucially, for deeper personalization, this module should also be capable of generating responses that gently guide the conversation, ask clarifying or reflective questions, or offer empathetic statements when the persona dictates a more supportive and less solution-oriented interaction.
     *   **Functionality:** Takes user query, history, and the persona description to produce a natural language response.
     *   **DSPy Implementation:**
         *   **Module:** `dspy.ChainOfThought` (to allow reasoning about how to apply the persona).
@@ -209,5 +209,6 @@ This document outlines the technical requirements for building an Adaptive Perso
 *   If pursuing on-device and needing maximum efficiency/performance from the small LM, explore `dspy.BootstrapFinetune` after initial prompt optimization.
 *   Metrics are key: iterate on them. For persona compatibility, an LM-as-judge module might be needed:
     *   Signature: `user_input_style: str, chatbot_response_style: str, target_persona: str -> compatibility_score: float, feedback: str`
+*   A specific focus during optimization should be on the system's ability to transition from surface-level user queries to deeper conversational engagement when appropriate, and to adapt its persona and response style to facilitate this (e.g., using examples that show this progression).
 
 This PRD provides a roadmap. Each feature will require detailed design of its signatures, thoughtful data creation for optimization, and careful metric definition. The power of DSPy will be in making each of these components learnable and adaptable to your specific goals and the chosen small LM.
