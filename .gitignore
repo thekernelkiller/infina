@@ -14,6 +14,7 @@ pip-selfcheck.json
 .vscode/
 *.swp
 *.swo
+.DS_Store
 
 # Environment variables
 .env

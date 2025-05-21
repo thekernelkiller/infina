@@ -4,6 +4,7 @@
 #
 #    pip-compile requirements.in
 #
+
 aiohappyeyeballs==2.6.1
     # via aiohttp
 aiohttp==3.11.18
