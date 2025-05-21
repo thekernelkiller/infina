@@ -2,7 +2,6 @@ import dspy
 from typing import List
 
 class ResponseGenerationSignature(dspy.Signature):
-    """Generates the chatbot's response aligned with the crafted persona and user query."""
     user_query = dspy.InputField(desc="The user's current query/message.")
     short_term_conversation_history = dspy.InputField(desc="Recent messages in the conversation.", type=List[str])
     chatbot_persona_description = dspy.InputField(desc="The active persona description for the chatbot.")
@@ -11,10 +10,8 @@ class ResponseGenerationSignature(dspy.Signature):
     chatbot_response = dspy.OutputField(desc="The natural language response from the chatbot.")
 
 class ResponseGeneration(dspy.Module):
-    """DSPy module for Persona-Driven Response Generation (PRD 5.3)."""
     def __init__(self):
         super().__init__()
-        # ChainOfThought allows the LM to reason about how to apply the persona.
         self.generate_response = dspy.ChainOfThought(ResponseGenerationSignature)
 
     def forward(self, user_query, short_term_conversation_history, chatbot_persona_description, response_style_guide):
@@ -29,10 +26,9 @@ class ResponseGeneration(dspy.Module):
 if __name__ == '__main__':
     from app.dspy_config import configure_lm
     try:
-        configure_lm() # Ensure LM is configured
+        configure_lm()
         print("LM Configured for ResponseGeneration test.")
 
-        # Test case
         test_response_gen = ResponseGeneration()
         history = ["User: Hi there!", "Bot: Hello! How can I help you today?"]
         response_output = test_response_gen(

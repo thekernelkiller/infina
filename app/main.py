@@ -5,7 +5,6 @@ from core.persona_crafting import PersonaCrafting
 from core.response_generation import ResponseGeneration
 from core.session_memory import SessionMemory
 
-# --- Page Configuration ---
 st.set_page_config(
     page_title="Adaptive AI Companion",
     page_icon="🤖",
@@ -13,9 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Initialization & State Management ---
 def initialize_session_state():
-    """Initializes session state variables if they don't exist."""
     if "lm_configured" not in st.session_state:
         st.session_state.lm_configured = False
     if "error_message" not in st.session_state:
@@ -32,28 +29,35 @@ def initialize_session_state():
         st.session_state.current_persona_desc = "Default Assistant Persona"
     if "current_style_guide" not in st.session_state:
         st.session_state.current_style_guide = "Be helpful and informative."
-    if "messages" not in st.session_state: # For Streamlit chat UI
+    if "messages" not in st.session_state:
         st.session_state.messages = []
 
 initialize_session_state()
-
-# --- LM and Module Setup ---
 if not st.session_state.lm_configured:
     with st.spinner("Configuring AI Model..."):
         try:
-            configure_lm() # Configure DSPy LM (Gemini)
-            st.session_state.user_understanding_module = UserUnderstanding()
-            st.session_state.persona_crafting_module = PersonaCrafting()
-            st.session_state.response_generation_module = ResponseGeneration()
+            configure_lm()
+
+            user_understanding = UserUnderstanding()
+            user_understanding.load("models/optimized_user_understanding_student.json")
+            st.session_state.user_understanding_module = user_understanding
+            
+            persona_crafting = PersonaCrafting()
+            persona_crafting.load("models/optimized_persona_crafting_student.json")
+            st.session_state.persona_crafting_module = persona_crafting
+            
+            response_generation = ResponseGeneration()
+            response_generation.load("models/optimized_response_generation_student.json")
+            st.session_state.response_generation_module = response_generation
+            
             st.session_state.chat_session = SessionMemory()
             st.session_state.lm_configured = True
-            st.sidebar.success("AI Model Configured Successfully! (Gemini)")
+            st.sidebar.success("AI Model Configured Successfully! (Gemini with Optimized Modules)")
         except Exception as e:
             st.session_state.error_message = f"Error initializing AI: {str(e)}"
             st.sidebar.error(st.session_state.error_message)
             st.error(f"Critical Error: Could not configure AI. Please check console and .env settings. Details: {e}")
 
-# --- UI Rendering ---
 st.title("🤖 Adaptive Personal AI Companion (Phase 1 MVP)")
 st.caption("Powered by DSPy and Gemini")
 
@@ -62,28 +66,19 @@ if st.session_state.error_message:
 elif not st.session_state.lm_configured:
     st.warning("AI Model is not configured. Please check the sidebar and logs.")
 else:
-    # Display chat messages from history
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    # Accept user input
     if prompt := st.chat_input("What's on your mind?"):
-        # Add user message to chat history and display it
         st.session_state.messages.append({"role": "user", "content": prompt})
         st.session_state.chat_session.add_message("user", prompt)
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # --- Core AI Logic for Response ---
         with st.spinner("Thinking..."):
             try:
-                # 1. Initial User Understanding (PRD 5.1)
-                # For MVP, let's use the last 1-2 user utterances.
-                # The PRD suggests `user_utterances: list[str]`. Let's send the current prompt as a list.
                 user_utterances_for_understanding = [prompt] 
-                # If history exists, potentially add the previous user message if it's recent.
-                # For simplicity in MVP, just the current prompt.
 
                 understanding_output = st.session_state.user_understanding_module(
                     user_utterances=user_utterances_for_understanding
@@ -96,8 +91,6 @@ else:
                     "hints": understanding_output.persona_hints
                 })
 
-                # 2. Dynamic Persona Crafting (PRD 5.2)
-                # Use a limited history for persona crafting initially
                 history_for_persona = st.session_state.chat_session.get_formatted_history(max_turns=4)
                 
                 persona_output = st.session_state.persona_crafting_module(
@@ -112,7 +105,6 @@ else:
                 st.sidebar.write(f"**Persona:** {st.session_state.current_persona_desc}")
                 st.sidebar.write(f"**Style Guide:** {st.session_state.current_style_guide}")
 
-                # 3. Persona-Driven Response Generation (PRD 5.3)
                 history_for_response = st.session_state.chat_session.get_formatted_history(max_turns=10)
                 response_output = st.session_state.response_generation_module(
                     user_query=prompt,
@@ -126,13 +118,11 @@ else:
                 bot_response = f"Sorry, I encountered an error: {str(e)}"
                 st.error(bot_response)
         
-        # Add bot response to chat history and display it
         st.session_state.messages.append({"role": "assistant", "content": bot_response})
         st.session_state.chat_session.add_message("bot", bot_response)
         with st.chat_message("assistant"):
             st.markdown(bot_response)
 
-    # Sidebar for debugging/info
     st.sidebar.divider()
     st.sidebar.header("Session Info")
     if st.session_state.lm_configured:
@@ -141,12 +131,8 @@ else:
         if st.button("Clear Chat History"):
             st.session_state.messages = []
             st.session_state.chat_session.clear()
-            # Reset persona to default or re-evaluate based on a welcome message?
-            # For now, just clear and let it adapt from the next user input.
             st.session_state.current_persona_desc = "Default Assistant Persona (awaiting input)"
             st.session_state.current_style_guide = "Be helpful and informative."
             st.rerun()
     else:
         st.sidebar.warning("AI not fully initialized.")
-
-# To run: streamlit run app/main.py 

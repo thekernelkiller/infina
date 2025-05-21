@@ -2,7 +2,6 @@ import dspy
 from typing import List
 
 class PersonaCraftingSignature(dspy.Signature):
-    """Defines or refines the chatbot's active persona based on user insights and conversation history."""
     inferred_user_style = dspy.InputField(desc="User's inferred communication style.")
     emotional_tone = dspy.InputField(desc="User's inferred emotional tone.")
     persona_hints = dspy.InputField(desc="Initial hints for the chatbot persona.", type=List[str])
@@ -12,10 +11,8 @@ class PersonaCraftingSignature(dspy.Signature):
     response_style_guide = dspy.OutputField(desc="Specific style guidance for the next response (e.g., use emojis, be formal).")
 
 class PersonaCrafting(dspy.Module):
-    """DSPy module for Dynamic Persona Crafting (PRD 5.2)."""
     def __init__(self):
         super().__init__()
-        # ChainOfThought is appropriate as per PRD for reasoning about the persona.
         self.craft_persona = dspy.ChainOfThought(PersonaCraftingSignature)
 
     def forward(self, inferred_user_style, emotional_tone, persona_hints, short_term_conversation_history):
@@ -30,7 +27,7 @@ class PersonaCrafting(dspy.Module):
 if __name__ == '__main__':
     from app.dspy_config import configure_lm
     try:
-        configure_lm() # Ensure LM is configured
+        configure_lm()
         print("LM Configured for PersonaCrafting test.")
 
         # Test case
